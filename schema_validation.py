@@ -11,7 +11,7 @@ CROP_VALIDATOR = {"$jsonSchema": {
         "Season": {"bsonType":"string","minLength":1},
         "Crop": {"bsonType":"string","minLength":1},
         "Crop_Year": {"bsonType":["int","long"],"minimum":1900,"maximum":2100},
-        "Area": {"bsonType":["int","long","double","decimal"],"exclusiveMinimum":0},
+        "Area": {"bsonType":["int","long","double","decimal"],"minimum":0,"exclusiveMinimum":True},
         "Production": {"bsonType":["int","long","double","decimal"],"minimum":0},
         "Yield": {"bsonType":["int","long","double","decimal"],"minimum":0}
     }

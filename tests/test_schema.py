@@ -8,7 +8,8 @@ class SchemaTests(unittest.TestCase):
         self.assertEqual(len(CROP_VALIDATOR["$jsonSchema"]["required"]),8)
     def test_numeric_constraints(self):
         fields=CROP_VALIDATOR["$jsonSchema"]["properties"]
-        self.assertEqual(fields["Area"]["exclusiveMinimum"],0)
+        self.assertEqual(fields["Area"]["minimum"],0)
+        self.assertIs(fields["Area"]["exclusiveMinimum"],True)
         self.assertEqual(fields["Production"]["minimum"],0)
     def test_indexes_and_validator(self):
         db=MagicMock()

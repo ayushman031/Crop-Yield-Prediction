@@ -96,3 +96,8 @@ Open your web browser and navigate to:
 ## 📄 License
 This project is licensed under the MIT License.
 
+
+
+## CA2 Assignment
+
+See [README_CA2.md](README_CA2.md) for MongoDB validation, CRUD/aggregation demos, setup and viva instructions.

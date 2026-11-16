@@ -168,6 +168,7 @@
                        placeholder="Enter cultivated area" required>
                 <button type="submit">Predict Crop Yield</button>
             </form>
+            {% if error is defined %}<div class="result" role="alert" style="background:#fff1f0;color:#9b1c1c;">{{ error }}</div>{% endif %}
             {% if prediction is defined and prediction is not none %}
             <div class="result">
                 <h2>Predicted Yield</h2>

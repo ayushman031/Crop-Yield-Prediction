@@ -95,3 +95,4 @@ Open your web browser and navigate to:
 
 ## 📄 License
 This project is licensed under the MIT License.
+

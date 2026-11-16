@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Yield Prediction</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f7f1;
+            color: #26352a;
+        }
+        nav {
+            background: #245c38;
+            padding: 18px 8%;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 25px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 750px;
+            margin: 35px auto;
+            padding: 25px;
+        }
+        h1 {
+            color: #245c38;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #667568;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #00000010;
+        }
+        label {
+            display: block;
+            margin-top: 16px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5cc;
+            border-radius: 6px;
+            font-size: 15px;
+            background: white;
+        }
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            background: #287443;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1d5c33;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            text-align: center;
+            background: #e4f5e8;
+            border-radius: 8px;
+        }
+        .result h2 {
+            color: #245c38;
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #667568;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/prediction">Predict Yield</a>
+    </nav>
+    <div class="container">
+        <h1>Crop Yield Prediction</h1>
+        <p class="subtitle">
+            Enter crop details to estimate the expected yield.
+        </p>
+        <div class="card">
+            <form action="/prediction" method="POST">
+                <label for="state">State</label>
+                <select name="state" id="state" required>
+                    <option value="">Select State</option>
+                    {% for state in states %}
+                    <option value="{{ state }}"
+                        {% if selected_state == state %}selected{% endif %}>
+                        {{ state }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" formmethod="POST">
+                    Load Districts
+                </button>
+            </form>
+            <form action="/predict" method="POST">
+                <label for="state_predict">State</label>
+                <select name="state" id="state_predict" required>
+                    <option value="">Select State</option>
+                    {% for state in states %}
+                    <option value="{{ state }}"
+                        {% if selected_state == state %}selected{% endif %}>
+                        {{ state }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="district">District</label>
+                <select name="district" id="district" required>
+                    <option value="">Select District</option>
+                    {% for district in districts %}
+                    <option value="{{ district }}"
+                        {% if selected_district == district %}selected{% endif %}>
+                        {{ district }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="crop">Crop</label>
+                <select name="crop" id="crop" required>
+                    <option value="">Select Crop</option>
+                    {% for crop in crops %}
+                    <option value="{{ crop }}"
+                        {% if selected_crop == crop %}selected{% endif %}>
+                        {{ crop }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="season">Season</label>
+                <select name="season" id="season" required>
+                    <option value="">Select Season</option>
+                    {% for season in seasons %}
+                    <option value="{{ season }}"
+                        {% if selected_season == season %}selected{% endif %}>
+                        {{ season }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="year">Crop Year</label>
+                <input type="number" name="year" id="year"
+                       min="1997" max="2100" value="{{ selected_year or 2026 }}"
+                       required>
+                <label for="area">Cultivated Area (hectares)</label>
+                <input type="number" name="area" id="area"
+                       min="0.01" step="any" value="{{ selected_area or '' }}"
+                       placeholder="Enter cultivated area" required>
+                <button type="submit">Predict Crop Yield</button>
+            </form>
+            {% if prediction is defined and prediction is not none %}
+            <div class="result">
+                <h2>Predicted Yield</h2>
+                <p><strong>{{ prediction }}</strong></p>
+                <p>Estimated yield in the dataset's yield units.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

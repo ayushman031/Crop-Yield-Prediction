@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Yield Intelligence Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f4;
+            margin: 0;
+            padding: 25px;
+        }
+
+        h1, h2 {
+            color: #245c37;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            background: #e5f3e8;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .card h3 {
+            font-size: 15px;
+            color: #42654b;
+        }
+
+        .card p {
+            font-size: 22px;
+            font-weight: bold;
+            color: #245c37;
+        }
+
+        select, button {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #287a43;
+            color: white;
+            cursor: pointer;
+        }
+
+        a {
+            color: #287a43;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #287a43;
+            color: white;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Crop Yield Intelligence Dashboard</h1>
+
+    <p>
+        <a href="/">Dashboard</a> |
+        <a href="/prediction">Predict Crop Yield</a>
+    </p>
+
+    <div class="section">
+        <h2>Database Overview</h2>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Total Records</h3>
+                <p>{{ stats.total_records }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Total States</h3>
+                <p>{{ stats.total_states }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Districts</h3>
+                <p>{{ stats.total_districts }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Crops</h3>
+                <p>{{ stats.total_crops }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Filter Crop Data</h2>
+
+        <form method="POST" action="/">
+            <select name="state">
+                <option value="">All States</option>
+
+                {% for state in states %}
+                <option value="{{ state }}"
+                    {% if state == selected_state %}selected{% endif %}>
+                    {{ state }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" name="load_districts" value="1">
+                Load Districts
+            </button>
+        </form>
+
+        <form method="POST" action="/">
+
+            <input type="hidden" name="state"
+                   value="{{ selected_state }}">
+
+            <select name="district">
+                <option value="">All Districts</option>
+
+                {% for district in districts %}
+                <option value="{{ district }}"
+                    {% if district == selected_district %}selected{% endif %}>
+                    {{ district }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <select name="crop">
+                <option value="">All Crops</option>
+
+                {% for crop in crops %}
+                <option value="{{ crop }}"
+                    {% if crop == selected_crop %}selected{% endif %}>
+                    {{ crop }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <select name="season">
+                <option value="">All Seasons</option>
+
+                {% for season in seasons %}
+                <option value="{{ season }}"
+                    {% if season == selected_season %}selected{% endif %}>
+                    {{ season }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <select name="year">
+                <option value="">All Years</option>
+
+                {% for year in years %}
+                <option value="{{ year }}"
+                    {% if year|string == selected_year|string %}selected{% endif %}>
+                    {{ year }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Apply Filters</button>
+            <a href="/">Reset</a>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Crop Performance KPIs</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Production</h3>
+                <p>{{ "%.2f"|format(kpis.total_production) }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Cultivated Area</h3>
+                <p>{{ "%.2f"|format(kpis.total_area) }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Average Yield</h3>
+                <p>
+                    {{ "%.2f"|format(kpis.average_yield or 0) }}
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Best Crop (Yield)</h3>
+                <p>
+                    {% if kpis.best_crop %}
+                        {{ kpis.best_crop._id }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Worst Crop (Yield)</h3>
+                <p>
+                    {% if kpis.worst_crop %}
+                        {{ kpis.worst_crop._id }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Most Cultivated Crop</h3>
+                <p>
+                    {% if kpis.most_cultivated_crop %}
+                        {{ kpis.most_cultivated_crop._id }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Highest Production Year</h3>
+                <p>
+                    {% if kpis.best_year %}
+                        {{ kpis.best_year._id }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Crop Records</h2>
+
+        <p>Showing up to 100 matching records.</p>
+
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>State</th>
+                    <th>District</th>
+                    <th>Year</th>
+                    <th>Season</th>
+                    <th>Crop</th>
+                    <th>Area</th>
+                    <th>Production</th>
+                    <th>Yield</th>
+                </tr>
+
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.State_Name }}</td>
+                    <td>{{ record.District_Name }}</td>
+                    <td>{{ record.Crop_Year }}</td>
+                    <td>{{ record.Season }}</td>
+                    <td>{{ record.Crop }}</td>
+                    <td>{{ record.Area }}</td>
+                    <td>{{ record.Production }}</td>
+                    <td>{{ record.Yield }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8">No records found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

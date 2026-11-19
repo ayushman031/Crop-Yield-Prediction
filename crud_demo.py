@@ -11,7 +11,7 @@ def main():
     try:
         client.admin.command("ping")
         collection = ensure_schema(client["crop_yield_db"])
-        item = {"_id":"ca2-demo-"+uuid4().hex,
+        item = {"_id":"demo-record-"+uuid4().hex,
                 "State_Name":"Demo State","District_Name":"Demo District",
                 "Crop_Year":2026,"Season":"Kharif","Crop":"Demo Wheat",
                 "Area":5.0,"Production":20.0,"Yield":4.0}

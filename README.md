@@ -96,8 +96,6 @@ Open your web browser and navigate to:
 ## 📄 License
 This project is licensed under the MIT License.
 
+## 🔍 Database Validation & Testing
 
-
-## CA2 Assignment
-
-See [README_CA2.md](README_CA2.md) for MongoDB validation, CRUD/aggregation demos, setup and viva instructions.
+For MongoDB schema validation, reproducible data imports, CRUD examples, aggregation queries, and testing instructions, see the [Project Guide](PROJECT_GUIDE.md).

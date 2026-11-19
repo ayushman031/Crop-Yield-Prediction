@@ -1,4 +1,4 @@
-"""Aggregation demonstrations for the CA2 viva."""
+"""MongoDB aggregation examples for crop analytics."""
 import os
 from pprint import pprint
 from pymongo import MongoClient

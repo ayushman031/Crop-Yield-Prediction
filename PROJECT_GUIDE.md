@@ -1,4 +1,4 @@
-# CA2 MongoDB demonstration guide
+# Project Guide — MongoDB & Crop Yield Analytics
 
 Crop Yield Prediction applies MongoDB and PyMongo to historical agricultural
 records in crop_yield_db.crop_records.
@@ -26,9 +26,13 @@ Dashboard: http://127.0.0.1:5000/
 Prediction: http://127.0.0.1:5000/prediction
 Health: http://127.0.0.1:5000/health
 
-For the viva, show schema_validation.py for validator and indexes,
-crud_demo.py for INSERT, FIND, UPDATE, DELETE, and invalid update rejection,
-aggregation_demo.py for MATCH, GROUP, SORT, LIMIT, and the two Flask pages.
+## How to verify the implementation
+
+- `schema_validation.py`: MongoDB document validation rules and indexes.
+- `crud_demo.py`: Create, read, update, delete, and validation-rejection examples.
+- `aggregation_demo.py`: Aggregation examples with `$match`, `$group`, `$sort`, and `$limit`.
+- `python -m unittest discover -s tests -v`: Run automated tests.
+- `python app.py`: Explore analytics and predictions through the web interface.
 
 Important: The trained model is about 1.65 GB and must be retrieved through
 Git LFS for predictions. The database dashboard loads without the model.

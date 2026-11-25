@@ -1,314 +1,644 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crop Yield Intelligence Dashboard</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #f3f7f4;
+            --surface: #ffffff;
+            --surface-soft: #f7fbf8;
+            --primary: #164e31;
+            --primary-mid: #1f6e45;
+            --accent: #229954;
+            --accent-soft: #e6f5ec;
+            --text: #18291f;
+            --text-muted: #5a6e61;
+            --border: #dce7df;
+            --shadow-sm: 0 2px 8px rgba(18, 56, 34, 0.05);
+            --shadow-md: 0 8px 24px rgba(18, 56, 34, 0.08);
+            --radius-lg: 14px;
+            --radius-md: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f7f4;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             margin: 0;
-            padding: 25px;
+            padding: 0;
+            line-height: 1.5;
         }
 
-        h1, h2 {
-            color: #245c37;
+        /* Top Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #123e27 0%, #1b5b39 100%);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(12, 46, 28, 0.18);
         }
 
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.14);
+            display: grid;
+            place-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.86);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            background: #ffffff;
+            color: var(--primary);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Layout Container */
         .container {
-            max-width: 1200px;
-            margin: auto;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 28px 24px 48px;
         }
 
+        /* Hero Banner */
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 6px 0;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--primary);
+        }
+
+        .page-header p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 11px 18px;
+            border-radius: 9px;
+            box-shadow: 0 4px 12px rgba(34, 153, 84, 0.25);
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .cta-btn:hover {
+            background: var(--primary-mid);
+            transform: translateY(-1px);
+        }
+
+        /* Sections */
         .section {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
         }
 
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-badge {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-mid);
+            background: var(--accent-soft);
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        /* Stat & KPI Cards */
         .cards {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
         }
 
         .card {
-            background: #e5f3e8;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-top: 3px solid var(--accent);
+            padding: 18px 20px;
+            border-radius: var(--radius-md);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card.highlight {
+            background: linear-gradient(145deg, #f3faf6 0%, #e7f5ec 100%);
+            border-top-color: var(--primary);
         }
 
         .card h3 {
-            font-size: 15px;
-            color: #42654b;
+            margin: 0 0 8px 0;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
         }
 
         .card p {
+            margin: 0;
             font-size: 22px;
-            font-weight: bold;
-            color: #245c37;
+            font-weight: 800;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+            word-break: break-word;
         }
 
-        select, button {
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        /* Filter Forms */
+        .filter-step {
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .filter-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 14px;
+        }
+
+        .field {
+            flex: 1 1 190px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #c9d8cd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text);
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(34, 153, 84, 0.15);
+        }
+
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         button {
-            background: #287a43;
-            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary-mid);
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
             cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
         }
 
-        a {
-            color: #287a43;
-            font-weight: bold;
+        button:hover {
+            background: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        button.secondary {
+            background: #e6f0ea;
+            color: var(--primary);
+            border: 1px solid #c7dbce;
+        }
+
+        button.secondary:hover {
+            background: #d7e7dd;
+        }
+
+        .reset-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: #eef3ef;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .reset-link:hover {
+            background: #e0e8e2;
+            color: var(--text);
+        }
+
+        /* Data Table */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
+            font-size: 14px;
         }
 
         th {
-            background: #287a43;
-            color: white;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 13px 14px;
+            text-align: left;
+            white-space: nowrap;
         }
 
-        .table-container {
-            overflow-x: auto;
+        td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fafdfb;
+        }
+
+        tbody tr:hover {
+            background: var(--accent-soft);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .num {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--accent-soft);
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 36px 16px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 18px 14px 36px; }
+            .section { padding: 16px; }
+            .page-header h1 { font-size: 22px; }
         }
     </style>
 </head>
-
 <body>
-<div class="container">
-
-    <h1>Crop Yield Intelligence Dashboard</h1>
-
-    <p>
-        <a href="/">Dashboard</a> |
-        <a href="/prediction">Predict Crop Yield</a>
-    </p>
-
-    <div class="section">
-        <h2>Database Overview</h2>
-
-        <div class="cards">
-            <div class="card">
-                <h3>Total Records</h3>
-                <p>{{ stats.total_records }}</p>
-            </div>
-
-            <div class="card">
-                <h3>Total States</h3>
-                <p>{{ stats.total_states }}</p>
-            </div>
-
-            <div class="card">
-                <h3>Total Districts</h3>
-                <p>{{ stats.total_districts }}</p>
-            </div>
-
-            <div class="card">
-                <h3>Total Crops</h3>
-                <p>{{ stats.total_crops }}</p>
-            </div>
+    <header class="navbar">
+        <div class="nav-inner">
+            <a href="/" class="brand">
+                <span class="brand-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                    </svg>
+                </span>
+                <span>AgriPulse NoSQL</span>
+            </a>
+            <nav class="nav-links" aria-label="Primary Navigation">
+                <a href="/" class="active">Dashboard</a>
+                <a href="/prediction">Predict Crop Yield</a>
+            </nav>
         </div>
-    </div>
+    </header>
 
-    <div class="section">
-        <h2>Filter Crop Data</h2>
-
-        <form method="POST" action="/">
-            <select name="state">
-                <option value="">All States</option>
-
-                {% for state in states %}
-                <option value="{{ state }}"
-                    {% if state == selected_state %}selected{% endif %}>
-                    {{ state }}
-                </option>
-                {% endfor %}
-            </select>
-
-            <button type="submit" name="load_districts" value="1">
-                Load Districts
-            </button>
-        </form>
-
-        <form method="POST" action="/">
-
-            <input type="hidden" name="state"
-                   value="{{ selected_state }}">
-
-            <select name="district">
-                <option value="">All Districts</option>
-
-                {% for district in districts %}
-                <option value="{{ district }}"
-                    {% if district == selected_district %}selected{% endif %}>
-                    {{ district }}
-                </option>
-                {% endfor %}
-            </select>
-
-            <select name="crop">
-                <option value="">All Crops</option>
-
-                {% for crop in crops %}
-                <option value="{{ crop }}"
-                    {% if crop == selected_crop %}selected{% endif %}>
-                    {{ crop }}
-                </option>
-                {% endfor %}
-            </select>
-
-            <select name="season">
-                <option value="">All Seasons</option>
-
-                {% for season in seasons %}
-                <option value="{{ season }}"
-                    {% if season == selected_season %}selected{% endif %}>
-                    {{ season }}
-                </option>
-                {% endfor %}
-            </select>
-
-            <select name="year">
-                <option value="">All Years</option>
-
-                {% for year in years %}
-                <option value="{{ year }}"
-                    {% if year|string == selected_year|string %}selected{% endif %}>
-                    {{ year }}
-                </option>
-                {% endfor %}
-            </select>
-
-            <button type="submit">Apply Filters</button>
-            <a href="/">Reset</a>
-        </form>
-    </div>
-
-    <div class="section">
-        <h2>Crop Performance KPIs</h2>
-
-        <div class="cards">
-
-            <div class="card">
-                <h3>Total Production</h3>
-                <p>{{ "%.2f"|format(kpis.total_production) }}</p>
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1>Crop Yield Intelligence Dashboard</h1>
+                <p>Explore Indian agricultural production analytics powered by MongoDB &amp; Machine Learning.</p>
             </div>
-
-            <div class="card">
-                <h3>Total Cultivated Area</h3>
-                <p>{{ "%.2f"|format(kpis.total_area) }}</p>
-            </div>
-
-            <div class="card">
-                <h3>Average Yield</h3>
-                <p>
-                    {{ "%.2f"|format(kpis.average_yield or 0) }}
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Best Crop (Yield)</h3>
-                <p>
-                    {% if kpis.best_crop %}
-                        {{ kpis.best_crop._id }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Worst Crop (Yield)</h3>
-                <p>
-                    {% if kpis.worst_crop %}
-                        {{ kpis.worst_crop._id }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Most Cultivated Crop</h3>
-                <p>
-                    {% if kpis.most_cultivated_crop %}
-                        {{ kpis.most_cultivated_crop._id }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Highest Production Year</h3>
-                <p>
-                    {% if kpis.best_year %}
-                        {{ kpis.best_year._id }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </p>
-            </div>
-
+            <a href="/prediction" class="cta-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/>
+                </svg>
+                Launch Yield Predictor
+            </a>
         </div>
-    </div>
 
-    <div class="section">
-        <h2>Crop Records</h2>
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Database Overview</h2>
+                <span class="section-badge">MongoDB Live Collection</span>
+            </div>
+            <div class="cards">
+                <div class="card highlight">
+                    <h3>Total Records</h3>
+                    <p>{{ "{:,}".format(stats.total_records) }}</p>
+                </div>
+                <div class="card">
+                    <h3>Total States</h3>
+                    <p>{{ stats.total_states }}</p>
+                </div>
+                <div class="card">
+                    <h3>Total Districts</h3>
+                    <p>{{ stats.total_districts }}</p>
+                </div>
+                <div class="card">
+                    <h3>Total Crops</h3>
+                    <p>{{ stats.total_crops }}</p>
+                </div>
+            </div>
+        </section>
 
-        <p>Showing up to 100 matching records.</p>
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Filter Crop Data</h2>
+                <span class="section-badge">Dynamic Query Builder</span>
+            </div>
 
-        <div class="table-container">
-            <table>
-                <tr>
-                    <th>State</th>
-                    <th>District</th>
-                    <th>Year</th>
-                    <th>Season</th>
-                    <th>Crop</th>
-                    <th>Area</th>
-                    <th>Production</th>
-                    <th>Yield</th>
-                </tr>
+            <form method="POST" action="/" class="filter-step">
+                <div class="filter-row">
+                    <div class="field">
+                        <label for="state-select">1. Select State</label>
+                        <select id="state-select" name="state">
+                            <option value="">All States</option>
+                            {% for state in states %}
+                            <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>
+                                {{ state }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" name="load_districts" value="1" class="secondary">
+                            Load Districts
+                        </button>
+                    </div>
+                </div>
+            </form>
 
-                {% for record in records %}
-                <tr>
-                    <td>{{ record.State_Name }}</td>
-                    <td>{{ record.District_Name }}</td>
-                    <td>{{ record.Crop_Year }}</td>
-                    <td>{{ record.Season }}</td>
-                    <td>{{ record.Crop }}</td>
-                    <td>{{ record.Area }}</td>
-                    <td>{{ record.Production }}</td>
-                    <td>{{ record.Yield }}</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="8">No records found.</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
+            <form method="POST" action="/" class="filter-step">
+                <input type="hidden" name="state" value="{{ selected_state }}">
+                <div class="filter-row">
+                    <div class="field">
+                        <label for="district-select">2. District</label>
+                        <select id="district-select" name="district">
+                            <option value="">All Districts</option>
+                            {% for district in districts %}
+                            <option value="{{ district }}" {% if district == selected_district %}selected{% endif %}>
+                                {{ district }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-</div>
+                    <div class="field">
+                        <label for="crop-select">Crop</label>
+                        <select id="crop-select" name="crop">
+                            <option value="">All Crops</option>
+                            {% for crop in crops %}
+                            <option value="{{ crop }}" {% if crop == selected_crop %}selected{% endif %}>
+                                {{ crop }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="season-select">Season</label>
+                        <select id="season-select" name="season">
+                            <option value="">All Seasons</option>
+                            {% for season in seasons %}
+                            <option value="{{ season }}" {% if season == selected_season %}selected{% endif %}>
+                                {{ season }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="year-select">Crop Year</label>
+                        <select id="year-select" name="year">
+                            <option value="">All Years</option>
+                            {% for year in years %}
+                            <option value="{{ year }}" {% if year|string == selected_year|string %}selected{% endif %}>
+                                {{ year }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit">Apply Filters</button>
+                        <a href="/" class="reset-link">Reset</a>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Crop Performance KPIs</h2>
+                <span class="section-badge">Aggregation Pipeline</span>
+            </div>
+            <div class="cards">
+                <div class="card highlight">
+                    <h3>Total Production</h3>
+                    <p>{{ "{:,.2f}".format(kpis.total_production) }}</p>
+                </div>
+                <div class="card highlight">
+                    <h3>Total Cultivated Area</h3>
+                    <p>{{ "{:,.2f}".format(kpis.total_area) }}</p>
+                </div>
+                <div class="card">
+                    <h3>Average Yield</h3>
+                    <p>{{ "%.2f"|format(kpis.average_yield or 0) }}</p>
+                </div>
+                <div class="card">
+                    <h3>Best Crop (Yield)</h3>
+                    <p>{% if kpis.best_crop %}{{ kpis.best_crop._id }}{% else %}N/A{% endif %}</p>
+                </div>
+                <div class="card">
+                    <h3>Worst Crop (Yield)</h3>
+                    <p>{% if kpis.worst_crop %}{{ kpis.worst_crop._id }}{% else %}N/A{% endif %}</p>
+                </div>
+                <div class="card">
+                    <h3>Most Cultivated Crop</h3>
+                    <p>{% if kpis.most_cultivated_crop %}{{ kpis.most_cultivated_crop._id }}{% else %}N/A{% endif %}</p>
+                </div>
+                <div class="card">
+                    <h3>Highest Production Year</h3>
+                    <p>{% if kpis.best_year %}{{ kpis.best_year._id }}{% else %}N/A{% endif %}</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Crop Records</h2>
+                <span class="section-badge">Showing up to 100 matching records</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>State</th>
+                            <th>District</th>
+                            <th>Year</th>
+                            <th>Season</th>
+                            <th>Crop</th>
+                            <th class="num">Area</th>
+                            <th class="num">Production</th>
+                            <th class="num">Yield</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td>{{ record.State_Name }}</td>
+                            <td>{{ record.District_Name }}</td>
+                            <td>{{ record.Crop_Year }}</td>
+                            <td><span class="pill">{{ record.Season }}</span></td>
+                            <td><strong>{{ record.Crop }}</strong></td>
+                            <td class="num">{{ "{:,.2f}".format(record.Area) }}</td>
+                            <td class="num">{{ "{:,.2f}".format(record.Production) }}</td>
+                            <td class="num">{{ "%.2f"|format(record.Yield) }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="empty-state">No matching records found for the selected filters.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

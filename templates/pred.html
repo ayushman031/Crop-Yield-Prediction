@@ -4,179 +4,419 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crop Yield Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #f3f7f4;
+            --surface: #ffffff;
+            --surface-soft: #f7fbf8;
+            --primary: #164e31;
+            --primary-mid: #1f6e45;
+            --accent: #229954;
+            --accent-soft: #e6f5ec;
+            --text: #18291f;
+            --text-muted: #5a6e61;
+            --border: #dce7df;
+            --shadow-md: 0 10px 28px rgba(18, 56, 34, 0.08);
+        }
+
         * {
             box-sizing: border-box;
         }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f3f7f1;
-            color: #26352a;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
         }
-        nav {
-            background: #245c38;
-            padding: 18px 8%;
+
+        /* Top Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, #123e27 0%, #1b5b39 100%);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(12, 46, 28, 0.18);
         }
-        nav a {
-            color: white;
+
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+            color: #fff;
             text-decoration: none;
-            margin-right: 25px;
-            font-weight: bold;
         }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.14);
+            display: grid;
+            place-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.86);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            background: #ffffff;
+            color: var(--primary);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Main Layout */
         .container {
-            max-width: 750px;
-            margin: 35px auto;
-            padding: 25px;
+            max-width: 820px;
+            margin: 36px auto 54px;
+            padding: 0 20px;
         }
-        h1 {
-            color: #245c38;
+
+        .hero {
             text-align: center;
+            margin-bottom: 28px;
         }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--primary-mid);
+            background: var(--accent-soft);
+            padding: 5px 12px;
+            border-radius: 999px;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px 0;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--primary);
+        }
+
         .subtitle {
-            text-align: center;
-            color: #667568;
-            margin-bottom: 30px;
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 15px;
         }
+
         .card {
-            background: white;
+            background: var(--surface);
+            border: 1px solid var(--border);
             padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .step-box {
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            box-shadow: 0 4px 15px #00000010;
+            padding: 18px;
+            margin-bottom: 24px;
         }
+
+        .step-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .step-row .field {
+            flex: 1 1 240px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
         label {
-            display: block;
-            margin-top: 16px;
-            margin-bottom: 7px;
-            font-weight: bold;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
         }
+
         select, input {
             width: 100%;
-            padding: 11px;
-            border: 1px solid #cbd5cc;
-            border-radius: 6px;
-            font-size: 15px;
-            background: white;
+            padding: 11px 13px;
+            border: 1px solid #c9d8cd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text);
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(34, 153, 84, 0.15);
+        }
+
         button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 9px;
+            background: var(--accent);
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        button:hover {
+            background: var(--primary-mid);
+            transform: translateY(-1px);
+        }
+
+        button.secondary {
+            background: #e6f0ea;
+            color: var(--primary);
+            border: 1px solid #c7dbce;
+            font-size: 14px;
+            padding: 11px 18px;
+        }
+
+        button.secondary:hover {
+            background: #d7e7dd;
+        }
+
+        .submit-btn {
             width: 100%;
             margin-top: 24px;
-            padding: 13px;
-            border: none;
-            border-radius: 6px;
-            background: #287443;
-            color: white;
+            padding: 14px;
             font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(34, 153, 84, 0.22);
         }
-        button:hover {
-            background: #1d5c33;
-        }
+
+        /* Result & Error Banners */
         .result {
-            margin-top: 25px;
-            padding: 20px;
+            margin-top: 24px;
+            padding: 24px;
             text-align: center;
-            background: #e4f5e8;
-            border-radius: 8px;
+            background: linear-gradient(145deg, #e7f6ec 0%, #d8f0e0 100%);
+            border: 1px solid #b5dfc2;
+            border-radius: 12px;
         }
+
         .result h2 {
-            color: #245c38;
+            margin: 0 0 6px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--primary-mid);
         }
-        .note {
-            margin-top: 20px;
+
+        .result-value {
+            margin: 0;
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .result-caption {
+            margin: 6px 0 0 0;
             font-size: 13px;
-            color: #667568;
-            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .result.error {
+            background: #fff1f0;
+            border-color: #f5c2c0;
+            color: #9b1c1c;
+            font-weight: 600;
+            padding: 16px 20px;
+        }
+
+        @media (max-width: 640px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .card { padding: 20px; }
+            .hero h1 { font-size: 24px; }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="/">Dashboard</a>
-        <a href="/prediction">Predict Yield</a>
-    </nav>
-    <div class="container">
-        <h1>Crop Yield Prediction</h1>
-        <p class="subtitle">
-            Enter crop details to estimate the expected yield.
-        </p>
+    <header class="navbar">
+        <div class="nav-inner">
+            <a href="/" class="brand">
+                <span class="brand-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                    </svg>
+                </span>
+                <span>AgriPulse NoSQL</span>
+            </a>
+            <nav class="nav-links" aria-label="Primary Navigation">
+                <a href="/">Dashboard</a>
+                <a href="/prediction" class="active">Predict Yield</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <span class="hero-badge">Random Forest ML Model</span>
+            <h1>Crop Yield Prediction</h1>
+            <p class="subtitle">Select regional, seasonal, and cultivation parameters to forecast expected crop yield.</p>
+        </div>
+
         <div class="card">
-            <form action="/prediction" method="POST">
-                <label for="state">State</label>
-                <select name="state" id="state" required>
-                    <option value="">Select State</option>
-                    {% for state in states %}
-                    <option value="{{ state }}"
-                        {% if selected_state == state %}selected{% endif %}>
-                        {{ state }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <button type="submit" formmethod="POST">
-                    Load Districts
-                </button>
+            <form action="/prediction" method="POST" class="step-box">
+                <div class="step-row">
+                    <div class="field">
+                        <label for="state">Step 1: Choose State to Load Districts</label>
+                        <select name="state" id="state" required>
+                            <option value="">Select State</option>
+                            {% for state in states %}
+                            <option value="{{ state }}" {% if selected_state == state %}selected{% endif %}>
+                                {{ state }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" formmethod="POST" class="secondary">
+                        Load Districts
+                    </button>
+                </div>
             </form>
+
             <form action="/predict" method="POST">
-                <label for="state_predict">State</label>
-                <select name="state" id="state_predict" required>
-                    <option value="">Select State</option>
-                    {% for state in states %}
-                    <option value="{{ state }}"
-                        {% if selected_state == state %}selected{% endif %}>
-                        {{ state }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <label for="district">District</label>
-                <select name="district" id="district" required>
-                    <option value="">Select District</option>
-                    {% for district in districts %}
-                    <option value="{{ district }}"
-                        {% if selected_district == district %}selected{% endif %}>
-                        {{ district }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <label for="crop">Crop</label>
-                <select name="crop" id="crop" required>
-                    <option value="">Select Crop</option>
-                    {% for crop in crops %}
-                    <option value="{{ crop }}"
-                        {% if selected_crop == crop %}selected{% endif %}>
-                        {{ crop }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <label for="season">Season</label>
-                <select name="season" id="season" required>
-                    <option value="">Select Season</option>
-                    {% for season in seasons %}
-                    <option value="{{ season }}"
-                        {% if selected_season == season %}selected{% endif %}>
-                        {{ season }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <label for="year">Crop Year</label>
-                <input type="number" name="year" id="year"
-                       min="1997" max="2100" value="{{ selected_year or 2026 }}"
-                       required>
-                <label for="area">Cultivated Area (hectares)</label>
-                <input type="number" name="area" id="area"
-                       min="0.01" step="any" value="{{ selected_area or '' }}"
-                       placeholder="Enter cultivated area" required>
-                <button type="submit">Predict Crop Yield</button>
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="state_predict">State</label>
+                        <select name="state" id="state_predict" required>
+                            <option value="">Select State</option>
+                            {% for state in states %}
+                            <option value="{{ state }}" {% if selected_state == state %}selected{% endif %}>
+                                {{ state }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="district">District</label>
+                        <select name="district" id="district" required>
+                            <option value="">Select District</option>
+                            {% for district in districts %}
+                            <option value="{{ district }}" {% if selected_district == district %}selected{% endif %}>
+                                {{ district }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="crop">Crop</label>
+                        <select name="crop" id="crop" required>
+                            <option value="">Select Crop</option>
+                            {% for crop in crops %}
+                            <option value="{{ crop }}" {% if selected_crop == crop %}selected{% endif %}>
+                                {{ crop }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="season">Season</label>
+                        <select name="season" id="season" required>
+                            <option value="">Select Season</option>
+                            {% for season in seasons %}
+                            <option value="{{ season }}" {% if selected_season == season %}selected{% endif %}>
+                                {{ season }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="year">Crop Year</label>
+                        <input type="number" name="year" id="year"
+                               min="1997" max="2100" value="{{ selected_year or 2026 }}"
+                               required>
+                    </div>
+
+                    <div class="field">
+                        <label for="area">Cultivated Area (hectares)</label>
+                        <input type="number" name="area" id="area"
+                               min="0.01" step="any" value="{{ selected_area or '' }}"
+                               placeholder="e.g. 1250" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Predict Crop Yield</button>
             </form>
-            {% if error is defined %}<div class="result" role="alert" style="background:#fff1f0;color:#9b1c1c;">{{ error }}</div>{% endif %}
+
+            {% if error is defined %}
+            <div class="result error" role="alert">{{ error }}</div>
+            {% endif %}
+
             {% if prediction is defined and prediction is not none %}
             <div class="result">
                 <h2>Predicted Yield</h2>
-                <p><strong>{{ prediction }}</strong></p>
-                <p>Estimated yield in the dataset's yield units.</p>
+                <p class="result-value"><strong>{{ prediction }}</strong></p>
+                <p class="result-caption">Estimated yield in the dataset's yield units (production per unit area).</p>
             </div>
             {% endif %}
         </div>
-    </div>
+    </main>
 </body>
 </html>

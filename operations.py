@@ -89,12 +89,19 @@ def get_crop_kpis(state=None, district=None, season=None,
         "most_cultivated_crop": most_cultivated_crop,
         "best_year": best_year}
 
+def _normalize_id(record_id):
+    if isinstance(record_id, ObjectId):
+        return record_id
+    if isinstance(record_id, str) and len(record_id) == 24 and ObjectId.is_valid(record_id):
+        return ObjectId(record_id)
+    return record_id
+
 def add_crop_record(record):
     result = crop_collection.insert_one(record)
     return result.inserted_id
 
 def update_crop_record(record_id, updates):
-    result = crop_collection.update_one({"_id": ObjectId(record_id)},{"$set": updates})
+    result = crop_collection.update_one({"_id": _normalize_id(record_id)},{"$set": updates})
     return result.modified_count
 
 def create_crop_index():
@@ -104,5 +111,5 @@ def create_crop_filter_index():
     return crop_collection.create_index([("State_Name", 1),("District_Name", 1),("Crop_Year", 1)])
 
 def delete_crop_record(record_id):
-    result = crop_collection.delete_one({"_id": ObjectId(record_id)})
+    result = crop_collection.delete_one({"_id": _normalize_id(record_id)})
     return result.deleted_count
